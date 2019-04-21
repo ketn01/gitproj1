@@ -284,3 +284,116 @@ z:
             break;
     }
 
+    case 4:
+    {
+        clearviewport();
+        rectangle(10,10,630,470);
+        setbkcolor(BROWN);
+        setcolor(WHITE);
+        clrscr();
+        char ans;
+        fstream f;
+        book b1;
+        char name[20];
+        char author[20];
+        int a;
+        f.open("book",ios::in|ios::binary);
+        cout<<"\n";
+        cout<<" Enter book name whose record to be changed  :";
+        cin>>name;
+        do
+        {
+            f.read((char *)&b1,sizeof(b1));
+            if(f.eof()==1)
+            {
+                break;
+            }
+            if(strcmp(b1.name,name)==0)
+            {
+                cout< <"\n        Name     :"<<b1.name;
+                cout<<"\n        Author   :"<<b1.author;
+                cout<<"\n        Copies   :" <<b1.a;
+                getchar();
+                cout<<"\n                 Enter New Values" ;
+                cout<<"\n\n      Enter the book name  :";
+                cin>>name;
+                cout< <"\n        Enter author name    :";
+                cin>>author;
+                cout< <"\n        Enter no. of copies  :";
+                cin>>a;
+                strcpy(b1.name,name);
+                strcpy(b1.author,author);
+                b1.a=a;
+                int l=f.tellg();
+                f.close();
+                f.open("book",ios::out|ios::binary|ios::ate);
+                f.seekg(l-sizeof(b1));
+                f.write((char *)&b1,sizeof(b1));
+            }
+        }
+        while(f);
+
+        f.close();
+        settextstyle(7,0,1);
+        outtextxy(250,410,"Do You Want To Continue:");
+        ans=getchar();
+        if(ans=='Y'||ans=='y')
+        {
+            goto z;
+        }
+        else
+            break;
+    }
+
+//*******************************************************
+//      CASE       : 5
+//      DETAILS    : TO DELETE A BOOK�S RECORD
+//*******************************************************
+
+    case 5:
+    {
+        clearviewport();
+        rectangle(10,10,630,470);
+        setbkcolor(BROWN);
+        setcolor(WHITE);
+        char name[20];
+        f.close();
+        f.open("video",ios::in|ios::ate|ios::binary);
+        settextstyle(7,0,3);
+        outtextxy(200,30,"DELETING:-");
+        cout< <"\n\n\n\n\n\n     Enter The  Name U Want To delete:\t";
+        fflush(stdin);
+        cin>>name;
+        f.seekg(0);
+        int k=0;
+        do
+        {
+            f.close();
+            f.open("book",ios::in|ios::ate|ios::binary);
+            f.seekg(k);
+            fflush(stdin);
+            f.read((char *)&b1,sizeof(b1));
+            if(f.eof())
+                break;
+            if(strcmp(b1.name,name)==0)
+            {
+                k+=46;
+                continue;
+            }
+            else
+            {
+                f.close();
+                f.open("book2",ios::out|ios::ate|ios::binary);
+                f.write((char*)&b1, sizeof b1);
+                k+=46;
+            }
+        }
+        while(f);
+        f.close();
+        remove ("book");
+        rename ("book2","book");
+        cout< <"\n\n\n\n\n\tPress Any Key...";
+        getch();
+        goto z;
+    }
+
