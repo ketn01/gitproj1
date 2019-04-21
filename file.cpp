@@ -190,4 +190,97 @@ z:
         if(ans=='Y' || ans=='y')
             goto z;
         else
+
+	break;
+
+	  case 2:
+    {
+        clearviewport();
+        rectangle(10,10,630,470);
+        setbkcolor(LIGHTBLUE);
+        textbackground(3);
+        textcolor(6);
+        cout< <"\n\n";
+        fstream f;
+        f.open("book",ios::in|ios::out|ios::ate|ios::app|ios::binary);
+        char ans;
+        f.seekg(0);
+        int ctr=0;
+        while(f.read((char *)&b1,sizeof(b1)) )
+        {
+            ctr=ctr+1;
+            if(ctr==8)
+            {
+                getchar();
+                clrscr();
+                ctr=0;
+            }
+            b1.show();
+            if(f.eof()==1)
+            {
+                break;
+            }
+        }
+        f.close();
+        settextstyle(7,0,1);
+        outtextxy(250,410,"Do You Want To Continue:");
+        cin>>ans;
+        if(ans=='y'|| ans=='Y')
+            goto z;
+        else
+        {
+            closegraph();
+            exit(1);
+        }
+    }
+
+//*******************************************************
+//      CASE       : 3
+//      DETAILS    : TO CHECK AVAILABILITY
+//*******************************************************
+
+    case 3:
+    {
+        gotoxy(60,25);
+        clearviewport();
+        rectangle(10,10,630,470);
+        setbkcolor(DARKGRAY);
+        textbackground(3);
+        textcolor(5);
+        clrscr();
+        char ans;
+        ifstream f;
+        book b1;
+        char name[20];
+        char author[20];
+        int a;
+        f.open("book",ios::in|ios::binary);
+        cout< <"\n\n\n          Enter book name whose record to be seen  :";
+        cin>>name;
+        do
+        {
+            f.read((char *)&b1,sizeof(b1));
+            if(f.eof()==1)
+            {
+                break;
+            }
+            if(strcmp(b1.name,name)==0)
+            {
+                cout< <"\n                  Name     :"<<b1.name;
+                cout<<"\n                 author   :"<<b1.author;
+                cout<<"\n                 copies   :"<<b1.a;
+                getchar();
+            }
+        }
+        while(f);
+        f.close();
+//  a:
+        settextstyle(7,0,1);
+        outtextxy(250,410,"Do You Want To Continue:");
+        ans=getchar();
+        if(ans=='Y'||ans=='y')
+            goto z;
+        else
             break;
+    }
+
