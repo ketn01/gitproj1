@@ -191,3 +191,92 @@ z:
             goto z;
         else
             break;
+	void class_result()
+{
+    clrscr();
+    fp.open("student.dat",ios::in);
+    if(!fp)
+    {
+        cout<<"ERROR!!! FILE COULD NOT BE OPEN\n\n\n Go To Entry Menu to create File";
+        cout<<"\n\n\n Program is closing ....";
+        getch();
+        exit(0);
+    }
+
+    cout<<"\n\n\t\tALL STUDENTS RESULT \n\n";
+    cout<<"====================================================\n";
+    cout<<"Roll No. Name          P  C  M  E  CS  %age Grade\n";
+    cout<<"====================================================\n";
+
+    while(fp.read((char*)&st,sizeof(student)))
+    {
+        st.show_tabular();
+    }
+    fp.close();
+    getch();
+}
+
+
+
+
+//***************************************************************
+//      function to display result menu
+//****************************************************************
+
+void result()
+{
+    int ans,rno;
+    char ch;
+    clrscr();
+    cout<<"\n\n\nRESULT MENU";
+    cout<<"\n\n\n1. Class Result\n\n2. Student Report Card\n\n3.Back to Main Menu";
+    cout<<"\n\n\nEnter Choice (1/2)? ";
+    cin>>ans;
+    switch(ans)
+    {
+    case 1 :
+        class_result();
+        break;
+    case 2 :
+    {
+        do
+        {
+            clrscr();
+            char ans;
+            cout<<"\n\nEnter Roll Number Of Student : ";
+            cin>>rno;
+            display_sp(rno);
+            cout<<"\n\nDo you want to See More Result (y/n)?";
+            cin>>ans;
+        }
+        while(ans=='y'||ans=='Y');
+
+        break;
+    }
+    case 3:
+        break;
+    default:
+        cout<<"\a";
+    }
+}
+
+//***************************************************************
+//      INTRODUCTION FUNCTION
+//****************************************************************
+
+void intro()
+{
+    clrscr();
+    gotoxy(35,11);
+    cout<<"STUDENT";
+    gotoxy(33,14);
+    cout<<"REPORT CARD";
+    gotoxy(35,17);
+    cout<<"PROJECT";
+    cout<<"\n\nMADE BY : Code With C";
+    cout<<"\n\nCONTACT : codewithc.com";
+    getch();
+
+}
+
+
