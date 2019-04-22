@@ -508,3 +508,53 @@ z:
     fstream f;
     f.open("book",ios::in|ios::out|ios::app|ios::ate|ios::binary);
     clearviewport();
+    settextstyle(10,HORIZ_DIR,3);
+    setbkcolor(GREEN);
+    rectangle(10,10,630,470);
+    outtextxy(100,15,"WHAT DO U WANT TO DO:");
+    settextstyle(SANS_SERIF_FONT,0,3);
+    outtextxy(250,100,"1 . TO BUY");
+    outtextxy(250,150,"2 . TO SHOW ALL BOOKS");
+    outtextxy(250,200,"3 . TO CHECK AVAILABILITY");
+    outtextxy(250,250,"4 . TO MODIFY");
+    outtextxy(250,300,"5 . TO DELETE");
+    outtextxy(250,350,"6 . TO EXIT");
+    int a;
+    settextstyle(7,0,5);
+    outtextxy(20,400, "ENTER UR CHOICE:");
+    f.seekg(0);
+    gotoxy(55,25);
+    cin>>a;
+    char x;
+    gotoxy(1,1);
+
+    switch (a)
+    {
+
+//*******************************************************
+//      CASE       : 1
+//      DETAILS    : TO ADD A BOOK?S RECORD
+//*******************************************************
+
+    case 1:
+        gotoxy(1,1);
+        clearviewport();
+        rectangle(10,10,630,470);
+        setbkcolor(RED);
+        textbackground(13);
+        textcolor(6);
+        clrscr();
+        fstream f;
+        f.open("book",ios::in|ios::out|ios::ate|ios::app|ios::binary);
+        char ans;
+        b1.getdata();
+        f.write((char *)&b1,sizeof(b1));
+        getch();
+        settextstyle(7,0,1);
+        outtextxy(250,410,"Do You Want To Continue:");
+
+        ans=getchar();
+        if(ans=='Y' || ans=='y')
+            goto z;
+        else
+            break;
