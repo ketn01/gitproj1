@@ -279,4 +279,232 @@ void intro()
 
 }
 
+//***************************************************************
+//      ENTRY / EDIT MENU FUNCTION
+//****************************************************************
+void entry_menu()
+{
+    clrscr();
+    char ch2;
+    cout<<"\n\n\n\tENTRY MENU";
+    cout<<"\n\n\t1.CREATE STUDENT RECORD";
+    cout<<"\n\n\t2.DISPLAY ALL STUDENTS RECORDS";
+    cout<<"\n\n\t3.SEARCH STUDENT RECORD ";
+    cout<<"\n\n\t4.MODIFY STUDENT RECORD";
+    cout<<"\n\n\t5.DELETE STUDENT RECORD";
+    cout<<"\n\n\t6.BACK TO MAIN MENU";
+    cout<<"\n\n\tPlease Enter Your Choice (1-6) ";
+    ch2=getche();
+    switch(ch2)
+    {
+    case '1':
+        clrscr();
+        write_student();
+        break;
+    case '2':
+        display_all();
+        break;
+    case '3':
+        int num;
+        clrscr();
+        cout<<"\n\n\tPlease Enter The roll number ";
+        cin>>num;
+        display_sp(num);
+        break;
+    case '4':
+        modify_student();
+        break;
+    case '5':
+        delete_student();
+        break;
+    case '6':
+        break;
+    default:
+        cout<<"\a";
+        entry_menu();
+    }
+}
 
+
+//***************************************************************
+//      THE MAIN FUNCTION OF PROGRAM
+//****************************************************************
+
+
+void main()
+{
+    char ch;
+    intro();
+    do
+    {
+        clrscr();
+        cout<<"\n\n\n\tMAIN MENU";
+        cout<<"\n\n\t01. RESULT MENU";
+        cout<<"\n\n\t02. ENTRY/EDIT MENU";
+        cout<<"\n\n\t03. EXIT";
+        cout<<"\n\n\tPlease Select Your Option (1-3) ";
+        ch=getche();
+        switch(ch)
+        {
+        case '1':
+            clrscr();
+            result();
+            break;
+        case '2':
+            entry_menu();
+            break;
+        case '3':
+            exit(0);
+        default :
+            cout<<"\a";
+        }
+    }
+    while(ch!='3');
+}
+
+//*******************************************************
+//      INCLUDED HEADER FILES
+//*******************************************************
+
+#include"stdio.h"
+#include"conio.h"
+#include"fstream.h"
+#include"stdlib.h"
+#include"dos.h"
+#include"string.h"
+#include"graphics.h"
+#include"iomanip.h"
+
+//*******************************************************
+//      CLASS NAME : BOOK
+//*******************************************************
+
+class book
+{
+public:
+    char name[20];
+    char author[20];
+    int a;
+    void getdata();
+    void show();
+};
+
+//*******************************************************
+//      FUNCTIONS TO GET AND SHOW DATA
+//*******************************************************
+
+void book::getdata()
+{
+    cout< <"\n\"        \"ENTER DETAILS ABOUT BOOK U WANT TO PURCHASE\" :\"";
+    cout<<"\n\n\n\t\tEnter Name Of Book  :\t";
+    cin>>name;
+    cout< <"\n\t\tEnter Name Of Author    :\t";
+    cin>>author;
+    fflush(stdin);
+    cout< <"\n\t\tEnter No. Of Copies  :\t";
+    cin>>a;
+}
+void book::show()
+{
+
+    cout< <"BOOK      :"<<name;
+    cout<<"\nAUTHOR  :"<<author;
+    cout<<"\nCOPIES  :"<<a;
+}
+
+//*******************************************************
+//      TO INVOKE WELCOME SCREEN, CREDIT SCREEN
+//                   & ENDING SCREEN
+//*******************************************************
+
+void graph()
+{
+    for(int y=0; y&lt; 440; y=y+10)
+    {
+        fillellipse(50,y,50,50);
+        setfillstyle(2,GREEN);
+        fillellipse(100,y,50,50);
+        setfillstyle(3,YELLOW);
+        fillellipse(200,y+10,50,50);
+        setfillstyle(2,WHITE);
+        fillellipse(300,y-15,50,50);
+        setfillstyle(3,6);
+        fillellipse(400,y-5,50,50);
+        setfillstyle(2,BLUE);
+        fillellipse(500,y+20,50,50);
+        setfillstyle(3,CYAN);
+        clearviewport();
+
+        for(int c=440; c&lt; 480; ++c)
+        {
+            setlinestyle(0,1,3);
+            setcolor(WHITE);
+
+            line(0,c,325,480);
+            line(680,c,325,480);
+        }
+        delay(20);
+    }
+
+    int x[5];
+    for(x[0]=50,x[1]=100,x[2]=200,x[3]=400,x[4]=500,y=450; y>=240; y=y-10,x[0]=x[0]+13,x[2]=x[2]+6,x[1]+=11,x[3]-=4,x[4]-=9)
+    {
+        fillellipse(x[0],y,20,20);
+        setfillstyle(1,GREEN);
+        fillellipse(x[1],y,20,20);
+        setfillstyle(1,YELLOW);
+        fillellipse(x[2],y+10,20,20);
+        setfillstyle(1,WHITE);
+        fillellipse(300,y-15,20,20);
+        setfillstyle(1,6);
+        fillellipse(x[3],y-5,20,20);
+        setfillstyle(1,BLUE);
+        fillellipse(x[4],y+20,20,20);
+        setfillstyle(1,CYAN);
+
+        clearviewport();
+        for(int c=440; c&lt; 480; ++c)
+        {
+            setlinestyle(0,1,3);
+            setcolor(BLACK);
+            line(0,c,325,480);
+            line(680,c,325,480);
+        }
+        delay(20);
+    }
+
+    for (int c=0; c&lt; 150; ++c)
+    {
+        setcolor(BLACK);
+        fillellipse(325,240,c*1.5,c);
+        delay(10);
+    }
+    setcolor(BLACK);
+    settextstyle(7,0,5);
+    outtextxy(115,200,"B O O K - S H O P");
+    getch();
+    clearviewport();
+}
+
+void main()
+{
+    clrscr();
+    int gdriver=DETECT,gmode;
+    initgraph(&gdriver,&gmode,"\\tc\\bgi");
+    graph();
+    rectangle(10,10,630,470);
+    setbkcolor(RED);
+    rectangle(10,10,630,470);
+    settextstyle(GOTHIC_FONT,0,4);
+    setcolor(WHITE);
+    outtextxy(30,35,"Developed By:-");
+    settextstyle(10,0,3);
+    outtextxy(150,100,"*iCBSE.com");
+    getch();
+    char s;
+    book b1;
+z:
+
+    fstream f;
+    f.open("book",ios::in|ios::out|ios::app|ios::ate|ios::binary);
+    clearviewport();
