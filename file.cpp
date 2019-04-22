@@ -749,3 +749,281 @@ z:
 
     switch (a)
     {
+	    //*******************************************************
+//      CASE       : 1
+//      DETAILS    : TO ADD A BOOK?S RECORD
+//*******************************************************
+
+    case 1:
+        gotoxy(1,1);
+        clearviewport();
+        rectangle(10,10,630,470);
+        setbkcolor(RED);
+        textbackground(13);
+        textcolor(6);
+        clrscr();
+        fstream f;
+        f.open("book",ios::in|ios::out|ios::ate|ios::app|ios::binary);
+        char ans;
+        b1.getdata();
+        f.write((char *)&b1,sizeof(b1));
+        getch();
+        settextstyle(7,0,1);
+        outtextxy(250,410,"Do You Want To Continue:");
+
+        ans=getchar();
+        if(ans=='Y' || ans=='y')
+            goto z;
+        else
+            break;
+
+//*******************************************************
+//      CASE       : 2
+//      DETAILS    : TO SHOW ALL BOOKS? RECORDS
+//*******************************************************
+
+    case 2:
+    {
+        clearviewport();
+        rectangle(10,10,630,470);
+        setbkcolor(LIGHTBLUE);
+        textbackground(3);
+        textcolor(6);
+        cout< <"\n\n";
+        fstream f;
+        f.open("book",ios::in|ios::out|ios::ate|ios::app|ios::binary);
+        char ans;
+        f.seekg(0);
+        int ctr=0;
+        while(f.read((char *)&b1,sizeof(b1)) )
+        {
+            ctr=ctr+1;
+            if(ctr==8)
+            {
+                getchar();
+                clrscr();
+                ctr=0;
+            }
+            b1.show();
+            if(f.eof()==1)
+            {
+                break;
+            }
+        }
+        f.close();
+        settextstyle(7,0,1);
+        outtextxy(250,410,"Do You Want To Continue:");
+        cin>>ans;
+        if(ans=='y'|| ans=='Y')
+            goto z;
+        else
+        {
+            closegraph();
+            exit(1);
+        }
+    }
+
+//*******************************************************
+//      CASE       : 3
+//      DETAILS    : TO CHECK AVAILABILITY
+//*******************************************************
+
+    case 3:
+    {
+        gotoxy(60,25);
+        clearviewport();
+        rectangle(10,10,630,470);
+        setbkcolor(DARKGRAY);
+        textbackground(3);
+        textcolor(5);
+        clrscr();
+        char ans;
+        ifstream f;
+        book b1;
+        char name[20];
+        char author[20];
+        int a;
+        f.open("book",ios::in|ios::binary);
+        cout< <"\n\n\n          Enter book name whose record to be seen  :";
+        cin>>name;
+        do
+        {
+            f.read((char *)&b1,sizeof(b1));
+            if(f.eof()==1)
+            {
+                break;
+            }
+            if(strcmp(b1.name,name)==0)
+            {
+                cout< <"\n                  Name     :"<<b1.name;
+                cout<<"\n                 author   :"<<b1.author;
+                cout<<"\n                 copies   :"<<b1.a;
+                getchar();
+            }
+        }
+        while(f);
+        f.close();
+//  a:
+        settextstyle(7,0,1);
+        outtextxy(250,410,"Do You Want To Continue:");
+        ans=getchar();
+        if(ans=='Y'||ans=='y')
+            goto z;
+        else
+            break;
+    }
+
+//*******************************************************
+//      CASE       : 4
+//      DETAILS    : TO MODIFY A RECORD
+//*******************************************************
+
+    case 4:
+    {
+        clearviewport();
+        rectangle(10,10,630,470);
+        setbkcolor(BROWN);
+        setcolor(WHITE);
+        clrscr();
+        char ans;
+        fstream f;
+        book b1;
+        char name[20];
+        char author[20];
+        int a;
+        f.open("book",ios::in|ios::binary);
+        cout<<"\n";
+        cout<<" Enter book name whose record to be changed  :";
+        cin>>name;
+        do
+        {
+            f.read((char *)&b1,sizeof(b1));
+            if(f.eof()==1)
+            {
+                break;
+            }
+            if(strcmp(b1.name,name)==0)
+            {
+                cout< <"\n        Name     :"<<b1.name;
+                cout<<"\n        Author   :"<<b1.author;
+                cout<<"\n        Copies   :" <<b1.a;
+                getchar();
+                cout<<"\n                 Enter New Values" ;
+                cout<<"\n\n      Enter the book name  :";
+                cin>>name;
+                cout< <"\n        Enter author name    :";
+                cin>>author;
+                cout< <"\n        Enter no. of copies  :";
+                cin>>a;
+                strcpy(b1.name,name);
+                strcpy(b1.author,author);
+                b1.a=a;
+                int l=f.tellg();
+                f.close();
+                f.open("book",ios::out|ios::binary|ios::ate);
+                f.seekg(l-sizeof(b1));
+                f.write((char *)&b1,sizeof(b1));
+            }
+        }
+        while(f);
+
+        f.close();
+        settextstyle(7,0,1);
+        outtextxy(250,410,"Do You Want To Continue:");
+        ans=getchar();
+        if(ans=='Y'||ans=='y')
+        {
+            goto z;
+        }
+        else
+            break;
+    }
+
+//*******************************************************
+//      CASE       : 5
+//      DETAILS    : TO DELETE A BOOK?S RECORD
+//*******************************************************
+
+    case 5:
+    {
+        clearviewport();
+        rectangle(10,10,630,470);
+        setbkcolor(BROWN);
+        setcolor(WHITE);
+        char name[20];
+        f.close();
+        f.open("video",ios::in|ios::ate|ios::binary);
+        settextstyle(7,0,3);
+        outtextxy(200,30,"DELETING:-");
+        cout< <"\n\n\n\n\n\n     Enter The  Name U Want To delete:\t";
+        fflush(stdin);
+        cin>>name;
+        f.seekg(0);
+        int k=0;
+        do
+        {
+            f.close();
+            f.open("book",ios::in|ios::ate|ios::binary);
+            f.seekg(k);
+            fflush(stdin);
+            f.read((char *)&b1,sizeof(b1));
+            if(f.eof())
+                break;
+            if(strcmp(b1.name,name)==0)
+            {
+                k+=46;
+                continue;
+            }
+            else
+            {
+                f.close();
+                f.open("book2",ios::out|ios::ate|ios::binary);
+                f.write((char*)&b1, sizeof b1);
+                k+=46;
+            }
+        }
+        while(f);
+        f.close();
+        remove ("book");
+        rename ("book2","book");
+        cout< <"\n\n\n\n\n\tPress Any Key...";
+        getch();
+        goto z;
+    }
+
+//*******************************************************
+//      CASE       : 6
+//      DETAILS    : TO EXIT
+//*******************************************************
+
+    case 6:
+    {
+        clearviewport();
+        rectangle(10,10,630,470);
+        setbkcolor(BROWN);
+        setcolor(BLUE);
+        settextstyle(8,0,4);
+        outtextxy(150,200,"NOW YOU WANT TO GO");
+        if(getch())
+        {
+            fflush(stdin);
+            clearviewport();
+            rectangle(10,10,630,470);
+            setbkcolor(LIGHTBLUE);
+            setcolor(RED);
+            window(10,10,40,11);
+            settextstyle(8,0,4);
+            outtextxy(150,200,"\"THANKS FOR VISITING\"");
+            getch();
+            closegraph();
+            exit(1);
+        }
+        else
+        {
+            goto z;
+        }
+    }
+    default:
+        goto z;
+    }
+}
