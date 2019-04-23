@@ -339,109 +339,7 @@ z:
         ans=getchar();
         if(ans=='Y'||ans=='y')
         {
-            goto z;
-        }
-        else
-            break;
-    }
-
-//*******************************************************
-//      CASE       : 5
-//      DETAILS    : TO DELETE A BOOK�S RECORD
-//*******************************************************
-
-    case 5:
-    {
-        clearviewport();
-        rectangle(10,10,630,470);
-        setbkcolor(BROWN);
-        setcolor(WHITE);
-        char name[20];
-        f.close();
-        f.open("video",ios::in|ios::ate|ios::binary);
-        settextstyle(7,0,3);
-        outtextxy(200,30,"DELETING:-");
-        cout< <"\n\n\n\n\n\n     Enter The  Name U Want To delete:\t";
-        fflush(stdin);
-        cin>>name;
-        f.seekg(0);
-        int k=0;
-        do
-        {
-            f.close();
-            f.open("book",ios::in|ios::ate|ios::binary);
-            f.seekg(k);
-            fflush(stdin);
-            f.read((char *)&b1,sizeof(b1));
-            if(f.eof())
-                break;
-            if(strcmp(b1.name,name)==0)
-            {
-                k+=46;
-                continue;
-            }
-            else
-            {
-                f.close();
-                f.open("book2",ios::out|ios::ate|ios::binary);
-                f.write((char*)&b1, sizeof b1);
-                k+=46;
-            }
-        }
-        while(f);
-        f.close();
-        remove ("book");
-        rename ("book2","book");
-        cout< <"\n\n\n\n\n\tPress Any Key...";
-        getch();
-        goto z;
-    }
-
-//*******************************************************
-//      CASE       : 4
-//      DETAILS    : TO MODIFY A RECORD
-//*******************************************************
-
-//*******************************************************
-//      CASE       : 6
-//      DETAILS    : TO EXIT
-//*******************************************************
-
-    case 6:
-    {
-        clearviewport();
-        rectangle(10,10,630,470);
-        setbkcolor(BROWN);
-        setcolor(BLUE);
-        settextstyle(8,0,4);
-        outtextxy(150,200,"NOW YOU WANT TO GO");
-        if(getch())
-        {
-            fflush(stdin);
-            clearviewport();
-            rectangle(10,10,630,470);
-            setbkcolor(LIGHTBLUE);
-            setcolor(RED);
-            window(10,10,40,11);
-            settextstyle(8,0,4);
-            outtextxy(150,200,"\"THANKS FOR VISITING\"");
-            getch();
-            closegraph();
-            exit(1);
-        }
-        else
-        {
-            goto z;
-        }
-    }
-    default:
-        goto z;
-    }
-//***************************************************************
-//                   HEADER FILE USED IN PROJECT
-//****************************************************************
-
-#include<conio.h>
+            goto z;#include<conio.h>
 #include<stdio.h>
 #include<process.h>
 #include<fstream.h>
@@ -516,3 +414,141 @@ public:
 
 };         //class ends here
 
+
+
+//***************************************************************
+//      global declaration for stream object, object
+//****************************************************************
+
+fstream fp;
+student st;
+
+//***************************************************************
+//      function to write in file
+//****************************************************************
+
+void write_student()
+{
+    fp.open("student.dat",ios::out|ios::app);
+    st.getdata();
+    fp.write((char*)&st,sizeof(student));
+    fp.close();
+    cout<<"\n\nstudent record Has Been Created ";
+    getch();
+}
+
+
+//***************************************************************
+//      function to read all records from file
+//****************************************************************
+
+
+void display_all()
+{
+    clrscr();
+    cout<<"\n\n\n\t\tDISPLAY ALL RECORD !!!\n\n";
+    fp.open("student.dat",ios::in);
+    while(fp.read((char*)&st,sizeof(student)))
+    {
+        st.showdata();
+        cout<<"\n\n====================================\n";
+        getch();
+    }
+    fp.close();
+    getch();
+}
+
+
+//***************************************************************
+//      function to read specific record from file
+//****************************************************************
+
+
+void display_sp(int n)
+{
+    int flag=0;
+    fp.open("student.dat",ios::in);
+    while(fp.read((char*)&st,sizeof(student)))
+    {
+        if(st.retrollno()==n)
+        {
+            clrscr();
+            st.showdata();
+            flag=1;
+        }
+    }
+    fp.close();
+    if(flag==0)
+        cout<<"\n\nrecord not exist";
+    getch();
+}
+
+
+//***************************************************************
+//      function to modify record of file
+//****************************************************************
+
+
+void modify_student()
+{
+    int no,found=0;
+    clrscr();
+    cout<<"\n\n\tTo Modify ";
+    cout<<"\n\n\tPlease Enter The roll number of student";
+    cin>>no;
+    fp.open("student.dat",ios::in|ios::out);
+    while(fp.read((char*)&st,sizeof(student)) && found==0)
+    {
+        if(st.retrollno()==no)
+        {
+            st.showdata();
+            cout<<"\nPlease Enter The New Details of student"<<endl;
+            st.getdata();
+            int pos=-1*sizeof(st);
+            fp.seekp(pos,ios::cur);
+            fp.write((char*)&st,sizeof(student));
+            cout<<"\n\n\t Record Updated";
+            found=1;
+        }
+    }
+    fp.close();
+    if(found==0)
+        cout<<"\n\n Record Not Found ";
+    getch();
+}
+
+
+//***************************************************************
+//      function to delete record of file
+//****************************************************************
+
+
+void delete_student()
+{
+    int no;
+    clrscr();
+    cout<<"\n\n\n\tDelete Record";
+    cout<<"\n\nPlease Enter The roll number of student You Want To Delete";
+    cin>>no;
+    fp.open("student.dat",ios::in|ios::out);
+    fstream fp2;
+    fp2.open("Temp.dat",ios::out);
+    fp.seekg(0,ios::beg);
+    while(fp.read((char*)&st,sizeof(student)))
+    {
+        if(st.retrollno()!=no)
+        {
+            fp2.write((char*)&st,sizeof(student));
+        }
+    }
+    fp2.close();
+    fp.close();
+    remove("student.dat");
+    rename("Temp.dat","student.dat");
+    cout<<"\n\n\tRecord Deleted ..";
+    getch();
+
+        }
+        else
+            break;
+        }
